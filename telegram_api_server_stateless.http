@@ -1,0 +1,143 @@
+### Send initial authentication request with phone and API credentials
+POST http://localhost:8000/auth/send_code
+Content-Type: application/json
+
+{
+  "phone": "+7123456789",
+  "api_id": 111,
+  "api_hash": "xxx"
+}
+
+### Verify the authentication code
+POST http://localhost:8000/auth/verify_code
+Content-Type: application/json
+X-Session-String: xxx4FKjlxRppqKhVhKP9PuEnHN4y8La3RyUHAe-gqw6ut44xN5utQEezxxxcJaY=
+
+{
+  "code": "123456"
+}
+
+### If 2FA is enabled, verify with password
+POST http://localhost:8000/auth/verify_password
+Content-Type: application/json
+X-Session-String: xxx4FKjlxRppqKhVhKP9PuEnHN4y8La3RyUHAe-gqw6ut44xN5utQEezxxxcJaY=
+
+{
+  "password": "xxx"
+}
+
+### Get list of chats
+GET http://localhost:8000/chats?limit=100
+X-Session-String: xxxXTl48o316HaPN23uCQq0R2es9rpGVwtiHyULPi7gHiyzwtX2DyuEgqnsQ4k3daR6kvqZmVhbFwJ85LS2j188IuXxxx
+
+### Logout from session
+DELETE http://localhost:8000/auth/logout
+X-Session-String: xxxclLVcmUcyLBfLQhE7b0VFU3VNY_RGQ2YbwjwCtVm63swTh18-yGTRNYR_z2jKNWpZMQi3-9_o2-fJSm_Z7qYGxxx
+
+### Get messages from chat
+GET http://localhost:8000/messages/
+?chat_id=1044444541
+&limit=50
+&offset_id=0
+&search=test
+&from_date=2024-03-01T00:00:00Z
+&to_date=2024-03-14T23:59:59Z
+X-Session-String: xxxXTl48o316HaPN23uCQq0R2es9rpGVwtiHyULPi7gHiyzwtX2DyuEgqnsQ4k3daR6kvqZmVhbFwJ85LS2j188IuXxxx
+
+### Get messages without optional parameters
+GET http://localhost:8000/messages/?chat_id=1040975541&limit=100
+X-Session-String: xxxXTl48o316HaPN23uCQq0R2es9rpGVwtiHyULPi7gHiyzwtX2DyuEgqnsQ4k3daR6kvqZmVhbFwJ85LS2j188IuXxxx
+
+### Get media content from specific message
+GET http://localhost:8000/messages/media/1664316?chat_id=1040975541
+X-Session-String: xxxXTl48o316HaPN23uCQq0R2es9rpGVwtiHyULPi7gHiyzwtX2DyuEgqnsQ4k3daR6kvqZmVhbFwJ85LS2j188IuXxxx
+
+### Join public group/channel by username
+POST http://localhost:8000/groups/join
+Content-Type: application/json
+X-Session-String: xxxXTl48o316HaPN23uCQq0R2es9rpGVwtiHyULPi7gHiyzwtX2DyuEgqnsQ4k3daR6kvqZmVhbFwJ85LS2j188IuXxxx
+
+{
+  "group_identifier": "@somename"
+}
+
+### Join public group/channel by link
+POST http://localhost:8000/groups/join
+Content-Type: application/json
+X-Session-String: xxxXTl48o316HaPN23uCQq0R2es9rpGVwtiHyULPi7gHiyzwtX2DyuEgqnsQ4k3daR6kvqZmVhbFwJ85LS2j188IuXxxx
+
+{
+  "group_identifier": "https://t.me/somename"
+}
+
+### Join private group by invitation link
+POST http://localhost:8000/groups/join
+Content-Type: application/json
+X-Session-String: xxxXTl48o316HaPN23uCQq0R2es9rpGVwtiHyULPi7gHiyzwtX2DyuEgqnsQ4k3daR6kvqZmVhbFwJ85LS2j188IuXxxx
+
+{
+  "group_identifier": "https://t.me/+SsvxxxZjMWEy"
+}
+
+### Send text message
+POST http://localhost:8000/messages/send
+Content-Type: application/json
+X-Session-String: xxx4FKjlxRppqKhVhKP9PuEnHN4y8La3RyUHAe-gqw6ut44xN5utQEezxxxcJaY=
+
+{
+  "chat_id": "@someusername",
+  "text": "Test message from API",
+  "reply_to_message_id": null
+}
+
+### Send message with file
+POST http://localhost:8000/messages/send_with_file
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+X-Session-String: xxx4FKjlxRppqKhVhKP9PuEnHN4y8La3RyUHAe-gqw6ut44xN5utQEezxxxcJaY=
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="chat_id"
+
+@devmlshorts
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="text"
+
+Test message with file
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+< ./test.txt
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Delete messages
+DELETE http://localhost:8000/messages/delete
+Content-Type: application/json
+X-Session-String: xxx4FKjlxRppqKhVhKP9PuEnHN4y8La3RyUHAe-gqw6ut44xN5utQEezxxxcJaY=
+
+{
+  "chat_id": "@somename",
+  "message_ids": [8,7,6]
+}
+
+### Forward message
+POST http://localhost:8000/messages/forward
+Content-Type: application/json
+X-Session-String: xxx4FKjlxRppqKhVhKP9PuEnHN4y8La3RyUHAe-gqw6ut44xN5utQEezxxxcJaY=
+
+{
+  "from_chat_id": "@somename1",
+  "to_chat_id": "@somename2",
+  "message_id": 828
+}
+
+### Edit message
+POST http://localhost:8000/messages/edit
+Content-Type: application/json
+X-Session-String: xxx4FKjlxRppqKhVhKP9PuEnHN4y8La3RyUHAe-gqw6ut44xN5utQEezxxxcJaY=
+
+{
+  "chat_id": "@somename1",
+  "message_id": "828",
+  "new_text": "Updated message text"
+}
